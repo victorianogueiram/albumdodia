@@ -1,68 +1,40 @@
-# fintrack — controle financeiro pessoal
+# Álbum do Dia
 
-Sistema financeiro pessoal com importação de extratos Itaú e Inter.
+Um álbum diferente a cada dia — com avaliação por estrelas e anotações pessoais.
 
-## Arquivos
+## Estrutura
 
 ```
-fintrack/
-├── index.html   — estrutura da página
-├── style.css    — estilos e tema claro/escuro
-├── app.js       — toda a lógica da aplicação
-└── README.md    — este arquivo
+album-do-dia/
+├── index.html      # app completo (HTML + CSS + JS inline)
+├── vercel.json     # config do Vercel
+└── README.md
 ```
 
-## Como publicar na Vercel (sem terminal)
+## Deploy
 
-### 1. Criar conta no GitHub
-- Acesse https://github.com e crie uma conta gratuita
+### 1. GitHub
 
-### 2. Criar repositório
-- Clique em "New repository"
-- Nome: `fintrack`
-- Deixe como "Public"
-- Clique em "Create repository"
+```bash
+git init
+git add .
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/SEU_USUARIO/album-do-dia.git
+git push -u origin main
+```
 
-### 3. Fazer upload dos arquivos
-- Na página do repositório, clique em "uploading an existing file"
-- Arraste os 3 arquivos: `index.html`, `style.css`, `app.js`
-- Clique em "Commit changes"
+### 2. Vercel
 
-### 4. Publicar na Vercel
-- Acesse https://vercel.com e clique em "Sign up with GitHub"
-- Clique em "Add New Project"
-- Selecione o repositório `fintrack`
-- Clique em "Deploy"
-- Pronto! Você receberá um link tipo `fintrack-xxx.vercel.app`
+1. Acesse [vercel.com](https://vercel.com) e faça login
+2. Clique em **Add New → Project**
+3. Importe o repositório `album-do-dia` do GitHub
+4. Clique em **Deploy** — sem nenhuma configuração extra
 
-## Como atualizar depois
+O Vercel detecta automaticamente que é um site estático.
 
-1. Edite os arquivos que o Claude gerar
-2. No GitHub, abra o arquivo que mudou
-3. Clique no ícone de lápis (editar)
-4. Cole o novo conteúdo
-5. Clique em "Commit changes"
-6. A Vercel atualiza automaticamente em ~30 segundos
+## Como funciona
 
-## Funcionalidades
-
-- Importação de extratos CSV do Itaú (conta corrente) e Inter (cartão)
-- Detecção automática de duplicatas ao reimportar
-- Categorização automática por nome da transação
-- Edição de nome e categoria por transação
-- Criação de categorias personalizadas
-- Filtros por período: 7 dias, 30 dias, semana, mês, tudo
-- Busca por nome ou categoria
-- Painel de meta de reserva com projeção
-- Dados salvos no navegador (localStorage)
-- Tema claro e escuro automático
-
-## Formato dos extratos
-
-**Itaú conta corrente:**
-Exporte em CSV ou Excel pelo Internet Banking > Extrato > Salvar como
-Colunas esperadas: `Data;Histórico;Valor`
-
-**Inter cartão:**
-Exporte em CSV pelo Super App > Cartões > Fatura > Exportar
-Colunas esperadas: `Data,Descrição,Valor`
+- O álbum do dia é sorteado de forma determinística pela data — o mesmo álbum aparece o dia inteiro para qualquer pessoa que abrir o site
+- Avaliações e anotações ficam salvas no `localStorage` do navegador (apenas no dispositivo)
+- 300 álbuns de Pop, Rock, Pop Rock, R&B e K-Pop a partir dos anos 2000
