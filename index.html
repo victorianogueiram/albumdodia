@@ -165,6 +165,16 @@
   }
   .already-rated::before { content: '✓'; font-size: 10px; }
 
+  .skip-btn {
+    background: none; border: 1px solid var(--paper-3);
+    font-family: var(--sans); font-size: 13px; font-weight: 400;
+    color: var(--ink-3); padding: 8px 18px; border-radius: var(--radius);
+    cursor: pointer; transition: all 0.15s; margin-top: 2rem;
+    display: block;
+  }
+  .skip-btn:hover { color: var(--ink-2); border-color: var(--ink-3); }
+  .skip-count { font-size: 11px; color: var(--ink-3); margin-top: 0.5rem; letter-spacing: 0.03em; }
+
   /* HISTORY PAGE */
   .history-wrap {
     max-width: 760px; margin: 0 auto;
@@ -327,6 +337,8 @@
     <textarea class="notes-area" id="notes" placeholder="O que você achou deste álbum?"></textarea>
     <div><button class="save-btn" id="save-btn">Salvar</button></div>
     <div class="save-status" id="save-status"></div>
+    <button class="skip-btn" id="skip-btn">Já ouvi esse álbum — sortear outro</button>
+    <div class="skip-count" id="skip-count"></div>
   </div>
 </div>
 
@@ -595,10 +607,7 @@ const ALBUMS = [
   {title:"INVU",artist:"Taeyeon",year:2022,genre:"kpop"},
   {title:"My Voice",artist:"Taeyeon",year:2017,genre:"kpop"},
   {title:"Purpose",artist:"Taeyeon",year:2019,genre:"kpop"},
-  {title:"XOXO",artist:"EXO",year:2013,genre:"kpop"},
-  {title:"Exodus",artist:"EXO",year:2015,genre:"kpop"},
-  {title:"The War",artist:"EXO",year:2017,genre:"kpop"},
-  {title:"Don't Mess Up My Tempo",artist:"EXO",year:2018,genre:"kpop"},
+
   {title:"Odd",artist:"SHINee",year:2015,genre:"kpop"},
   {title:"1 of 1",artist:"SHINee",year:2016,genre:"kpop"},
   {title:"Don't Call Me",artist:"SHINee",year:2021,genre:"kpop"},
@@ -654,6 +663,101 @@ const ALBUMS = [
   {title:"Atlanta Millionaires Club",artist:"Faye Webster",year:2019,genre:"poprock"},
   {title:"Yeezus",artist:"Kanye West",year:2013,genre:"rb"},
   {title:"The Life of Pablo",artist:"Kanye West",year:2016,genre:"rb"},
+  // 90s — Pop
+  {title:"...Baby One More Time",artist:"Britney Spears",year:1999,genre:"pop"},
+  {title:"Oops!... I Did It Again",artist:"Britney Spears",year:2000,genre:"pop"},
+  {title:"Ray of Light",artist:"Madonna",year:1998,genre:"pop"},
+  {title:"Bedtime Stories",artist:"Madonna",year:1994,genre:"pop"},
+  {title:"Spice",artist:"Spice Girls",year:1996,genre:"pop"},
+  {title:"Spiceworld",artist:"Spice Girls",year:1997,genre:"pop"},
+  {title:"Robson & Jerome",artist:"Robson & Jerome",year:1995,genre:"pop"},
+  {title:"Let's Talk About Love",artist:"Celine Dion",year:1997,genre:"pop"},
+  {title:"Falling into You",artist:"Celine Dion",year:1996,genre:"pop"},
+  {title:"Jagged Little Pill",artist:"Alanis Morissette",year:1995,genre:"poprock"},
+  {title:"Supposed Former Infatuation Junkie",artist:"Alanis Morissette",year:1998,genre:"poprock"},
+  {title:"Tidal",artist:"Fiona Apple",year:1996,genre:"pop"},
+  {title:"When the Pawn",artist:"Fiona Apple",year:1999,genre:"pop"},
+  {title:"CrazySexyCool",artist:"TLC",year:1994,genre:"rb"},
+  {title:"FanMail",artist:"TLC",year:1999,genre:"rb"},
+  {title:"My Life",artist:"Mary J. Blige",year:1994,genre:"rb"},
+  {title:"Share My World",artist:"Mary J. Blige",year:1997,genre:"rb"},
+  {title:"The Miseducation of Lauryn Hill",artist:"Lauryn Hill",year:1998,genre:"rb"},
+  {title:"The Writing's on the Wall",artist:"Destiny's Child",year:1999,genre:"rb"},
+  {title:"Survivor",artist:"Destiny's Child",year:2001,genre:"rb"},
+  {title:"My Love Is Your Love",artist:"Whitney Houston",year:1998,genre:"rb"},
+  {title:"I'm Your Baby Tonight",artist:"Whitney Houston",year:1990,genre:"rb"},
+  {title:"Janet.",artist:"Janet Jackson",year:1993,genre:"rb"},
+  {title:"The Velvet Rope",artist:"Janet Jackson",year:1997,genre:"rb"},
+  {title:"Music Box",artist:"Mariah Carey",year:1993,genre:"pop"},
+  {title:"Daydream",artist:"Mariah Carey",year:1995,genre:"pop"},
+  {title:"Butterfly",artist:"Mariah Carey",year:1997,genre:"pop"},
+  {title:"#1's",artist:"Mariah Carey",year:1998,genre:"pop"},
+  {title:"Emotions",artist:"Mariah Carey",year:1991,genre:"pop"},
+  {title:"Boys II Men II",artist:"Boyz II Men",year:1994,genre:"rb"},
+  {title:"Evolution",artist:"Boyz II Men",year:1997,genre:"rb"},
+  {title:"My Way",artist:"Usher",year:1997,genre:"rb"},
+  {title:"8701",artist:"Usher",year:2001,genre:"rb"},
+  {title:"R.",artist:"R. Kelly",year:1998,genre:"rb"},
+  {title:"Confessions",artist:"Usher",year:2004,genre:"rb"},
+  {title:"Ready to Die",artist:"The Notorious B.I.G.",year:1994,genre:"rb"},
+  {title:"Life After Death",artist:"The Notorious B.I.G.",year:1997,genre:"rb"},
+  {title:"All Eyez on Me",artist:"2Pac",year:1996,genre:"rb"},
+  {title:"The Chronic",artist:"Dr. Dre",year:1992,genre:"rb"},
+  {title:"Reasonable Doubt",artist:"JAY-Z",year:1996,genre:"rb"},
+  {title:"Vol. 2... Hard Knock Life",artist:"JAY-Z",year:1998,genre:"rb"},
+  {title:"The Marshall Mathers LP",artist:"Eminem",year:2000,genre:"rb"},
+  {title:"The Slim Shady LP",artist:"Eminem",year:1999,genre:"rb"},
+  // 90s — Rock
+  {title:"Nevermind",artist:"Nirvana",year:1991,genre:"rock"},
+  {title:"In Utero",artist:"Nirvana",year:1993,genre:"rock"},
+  {title:"Siamese Dream",artist:"The Smashing Pumpkins",year:1993,genre:"rock"},
+  {title:"Mellon Collie and the Infinite Sadness",artist:"The Smashing Pumpkins",year:1995,genre:"rock"},
+  {title:"Dummy",artist:"Portishead",year:1994,genre:"poprock"},
+  {title:"Blue",artist:"Weezer",year:1994,genre:"rock"},
+  {title:"Pinkerton",artist:"Weezer",year:1996,genre:"rock"},
+  {title:"Ten",artist:"Pearl Jam",year:1991,genre:"rock"},
+  {title:"Vs.",artist:"Pearl Jam",year:1993,genre:"rock"},
+  {title:"Superunknown",artist:"Soundgarden",year:1994,genre:"rock"},
+  {title:"Dirt",artist:"Alice in Chains",year:1992,genre:"rock"},
+  {title:"August and Everything After",artist:"Counting Crows",year:1993,genre:"rock"},
+  {title:"Dookie",artist:"Green Day",year:1994,genre:"rock"},
+  {title:"Nimrod",artist:"Green Day",year:1997,genre:"rock"},
+  {title:"Enema of the State",artist:"blink-182",year:1999,genre:"rock"},
+  {title:"Yourself or Someone Like You",artist:"Matchbox Twenty",year:1996,genre:"poprock"},
+  {title:"Mad Season",artist:"Matchbox Twenty",year:2000,genre:"poprock"},
+  {title:"No Doubt",artist:"No Doubt",year:1992,genre:"rock"},
+  {title:"Tragic Kingdom",artist:"No Doubt",year:1995,genre:"rock"},
+  {title:"Return of Saturn",artist:"No Doubt",year:2000,genre:"rock"},
+  {title:"Sixteen Stone",artist:"Bush",year:1994,genre:"rock"},
+  {title:"Razorblade Suitcase",artist:"Bush",year:1996,genre:"rock"},
+  {title:"What's the Story Morning Glory?",artist:"Oasis",year:1995,genre:"rock"},
+  {title:"Definitely Maybe",artist:"Oasis",year:1994,genre:"rock"},
+  {title:"Be Here Now",artist:"Oasis",year:1997,genre:"rock"},
+  {title:"Pablo Honey",artist:"Radiohead",year:1993,genre:"rock"},
+  {title:"The Bends",artist:"Radiohead",year:1995,genre:"rock"},
+  {title:"OK Computer",artist:"Radiohead",year:1997,genre:"rock"},
+  {title:"Californication",artist:"Red Hot Chili Peppers",year:1999,genre:"rock"},
+  {title:"Blood Sugar Sex Magik",artist:"Red Hot Chili Peppers",year:1991,genre:"rock"},
+  {title:"One Hot Minute",artist:"Red Hot Chili Peppers",year:1995,genre:"rock"},
+  {title:"Throwing Copper",artist:"Live",year:1994,genre:"rock"},
+  {title:"Secret Samadhi",artist:"Live",year:1997,genre:"rock"},
+  {title:"Frogstomp",artist:"Silverchair",year:1995,genre:"rock"},
+  {title:"Freak Show",artist:"Silverchair",year:1997,genre:"rock"},
+  {title:"Neon Ballroom",artist:"Silverchair",year:1999,genre:"rock"},
+  {title:"Rumble in Brighton",artist:"Hepcat",year:1997,genre:"rock"},
+  {title:"Spiderland",artist:"Slint",year:1991,genre:"rock"},
+  {title:"Use Your Illusion I",artist:"Guns N' Roses",year:1991,genre:"rock"},
+  {title:"Use Your Illusion II",artist:"Guns N' Roses",year:1991,genre:"rock"},
+  {title:"Metallica (Black Album)",artist:"Metallica",year:1991,genre:"rock"},
+  {title:"Core",artist:"Stone Temple Pilots",year:1992,genre:"rock"},
+  {title:"Purple",artist:"Stone Temple Pilots",year:1994,genre:"rock"},
+  {title:"Tiny Music...",artist:"Stone Temple Pilots",year:1996,genre:"rock"},
+  // 90s — Pop Rock
+  {title:"Surfacing",artist:"Sarah McLachlan",year:1997,genre:"poprock"},
+  {title:"Fumbling Towards Ecstasy",artist:"Sarah McLachlan",year:1993,genre:"poprock"},
+  {title:"From the Inside Out",artist:"Sixpence None the Richer",year:1997,genre:"poprock"},
+  {title:"Learning to Breathe",artist:"Switchfoot",year:2000,genre:"poprock"},
+  {title:"Beautiful Letdown",artist:"Switchfoot",year:2003,genre:"poprock"},
 ];
 
 const GENRE_LABELS = {pop:"Pop",rock:"Rock",poprock:"Pop Rock",rb:"R&B",kpop:"K-Pop"};
@@ -694,16 +798,43 @@ function getDayIndex(dateStr) {
 function loadData() {
   try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; } catch { return {}; }
 }
-function saveData(data) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+function saveData(d) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(d));
+}
+
+// skips: { "2025-05-13": [idx1, idx2, ...] }
+const SKIP_KEY = "albumdodia_skips";
+function loadSkips() {
+  try { return JSON.parse(localStorage.getItem(SKIP_KEY)) || {}; } catch { return {}; }
+}
+function saveSkips(s) {
+  localStorage.setItem(SKIP_KEY, JSON.stringify(s));
 }
 
 const today = new Date();
 const todayStr = getDateStr(today);
-const todayAlbum = ALBUMS[getDayIndex(todayStr)];
+
+// Returns the current album index for today, accounting for skips
+function getTodayAlbum() {
+  const skips = loadSkips();
+  const skippedToday = skips[todayStr] || [];
+  let attempt = 0;
+  while (attempt < ALBUMS.length) {
+    const deviceId = getOrCreateDeviceId();
+    const seed = deviceId + "|" + todayStr + "|skip" + attempt;
+    const idx = seededHash(seed) % ALBUMS.length;
+    if (!skippedToday.includes(idx)) return { album: ALBUMS[idx], idx };
+    attempt++;
+  }
+  // Fallback: all albums skipped, just return the base one
+  const deviceId = getOrCreateDeviceId();
+  const idx = seededHash(deviceId + "|" + todayStr + "|skip0") % ALBUMS.length;
+  return { album: ALBUMS[idx], idx };
+}
 
 let data = loadData();
 let currentRating = 0;
+let todayAlbum, todayIdx;
 
 function formatDatePT(str) {
   const [y,m,d] = str.split("-");
@@ -711,23 +842,46 @@ function formatDatePT(str) {
   return `${parseInt(d)} de ${months[parseInt(m)-1]} de ${y}`;
 }
 
-// TODAY PAGE
-document.getElementById("today-date").textContent = formatDatePT(todayStr).toUpperCase();
-document.getElementById("album-title").textContent = todayAlbum.title;
-document.getElementById("album-artist").textContent = todayAlbum.artist;
-document.getElementById("album-year").textContent = todayAlbum.year;
-document.getElementById("album-genre").textContent = GENRE_LABELS[todayAlbum.genre];
+function renderTodayPage() {
+  const result = getTodayAlbum();
+  todayAlbum = result.album;
+  todayIdx = result.idx;
+  currentRating = 0;
 
-const q = encodeURIComponent(todayAlbum.title + " " + todayAlbum.artist);
-document.getElementById("spotify-btn").href = `https://open.spotify.com/search/${q}`;
-document.getElementById("apple-btn").href = `https://music.apple.com/search?term=${q}`;
+  document.getElementById("today-date").textContent = formatDatePT(todayStr).toUpperCase();
+  document.getElementById("album-title").textContent = todayAlbum.title;
+  document.getElementById("album-artist").textContent = todayAlbum.artist;
+  document.getElementById("album-year").textContent = todayAlbum.year;
+  document.getElementById("album-genre").textContent = GENRE_LABELS[todayAlbum.genre];
 
-const existing = data[todayStr];
-if (existing) {
-  currentRating = existing.rating || 0;
-  document.getElementById("notes").value = existing.notes || "";
-  document.getElementById("already-rated-msg").style.display = "inline-flex";
+  const q = encodeURIComponent(todayAlbum.title + " " + todayAlbum.artist);
+  document.getElementById("spotify-btn").href = `https://open.spotify.com/search/${q}`;
+  document.getElementById("apple-btn").href = `https://music.apple.com/search?term=${q}`;
+
+  const existing = data[todayStr + "|" + todayIdx] || data[todayStr];
+  if (existing && existing.album && existing.album.title === todayAlbum.title) {
+    currentRating = existing.rating || 0;
+    document.getElementById("notes").value = existing.notes || "";
+    document.getElementById("already-rated-msg").style.display = "inline-flex";
+  } else {
+    document.getElementById("notes").value = "";
+    document.getElementById("already-rated-msg").style.display = "none";
+  }
+
+  renderStars(document.getElementById("stars"), currentRating, true);
+
+  const skips = loadSkips();
+  const skipCount = (skips[todayStr] || []).length;
+  const skipCountEl = document.getElementById("skip-count");
+  if (skipCount > 0) {
+    skipCountEl.textContent = `${skipCount} álbum${skipCount > 1 ? "s" : ""} pulado${skipCount > 1 ? "s" : ""} hoje`;
+  } else {
+    skipCountEl.textContent = "";
+  }
+  document.getElementById("save-status").textContent = "";
 }
+
+renderTodayPage();
 
 function renderStars(container, rating, interactive) {
   container.innerHTML = "";
@@ -756,17 +910,24 @@ function renderStars(container, rating, interactive) {
     container.appendChild(btn);
   }
 }
-renderStars(document.getElementById("stars"), currentRating, true);
 
 document.getElementById("save-btn").addEventListener("click", () => {
   const notes = document.getElementById("notes").value.trim();
   data = loadData();
-  data[todayStr] = { album: todayAlbum, rating: currentRating, notes, date: todayStr };
+  data[todayStr + "|" + todayIdx] = { album: todayAlbum, rating: currentRating, notes, date: todayStr };
   saveData(data);
   document.getElementById("already-rated-msg").style.display = "inline-flex";
   const st = document.getElementById("save-status");
   st.textContent = "Salvo!";
   setTimeout(() => st.textContent = "", 2000);
+});
+
+document.getElementById("skip-btn").addEventListener("click", () => {
+  const skips = loadSkips();
+  if (!skips[todayStr]) skips[todayStr] = [];
+  if (!skips[todayStr].includes(todayIdx)) skips[todayStr].push(todayIdx);
+  saveSkips(skips);
+  renderTodayPage();
 });
 
 // NAV
@@ -784,17 +945,19 @@ document.querySelectorAll(".nav-tab").forEach(tab => {
 // HISTORY
 function renderHistory() {
   data = loadData();
-  const entries = Object.values(data).sort((a,b) => b.date.localeCompare(a.date));
+  const entries = Object.values(data)
+    .filter(e => e && e.album)
+    .sort((a,b) => b.date.localeCompare(a.date));
   const list = document.getElementById("history-list");
   document.getElementById("history-count").textContent = entries.length + " entrada" + (entries.length !== 1 ? "s" : "");
   if (!entries.length) {
     list.innerHTML = '<div class="empty-history"><strong>Nenhuma entrada ainda</strong>Avalie o álbum de hoje para começar seu histórico.</div>';
     return;
   }
-  list.innerHTML = entries.map(e => {
-    const stars = Array.from({length:5},(_,i)=>`<span class="mini-star${i<e.rating?" on":""}">★</span>`).join("");
+  list.innerHTML = entries.map((e, i) => {
+    const stars = Array.from({length:5},(_,j)=>`<span class="mini-star${j<e.rating?" on":""}">★</span>`).join("");
     const notePreview = e.notes ? `<div class="history-item-note">${e.notes}</div>` : "";
-    return `<div class="history-item" data-date="${e.date}">
+    return `<div class="history-item" data-idx="${i}">
       <div class="history-item-date">${formatDatePT(e.date)}</div>
       <div class="history-item-info">
         <div class="history-item-title">${e.album.title}</div>
@@ -806,7 +969,7 @@ function renderHistory() {
   }).join("");
 
   list.querySelectorAll(".history-item").forEach(item => {
-    item.addEventListener("click", () => openModal(data[item.dataset.date]));
+    item.addEventListener("click", () => openModal(entries[+item.dataset.idx]));
   });
 }
 
